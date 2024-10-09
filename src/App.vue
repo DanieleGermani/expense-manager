@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import Badget from "./components/Badget.vue";
 import ControlBadget from "./components/ControlBadget.vue";
-
+import iconNewExpense from "./assets/img/nuevo-gasto.svg";
 const badget = ref(0);
 const avalableBudget = ref(0);
 
@@ -25,6 +25,9 @@ const difineBudget = (amount) => {
         />
       </div>
     </header>
+    <main v-if="badget > 0" class="new-expense-container">
+      <img :src="iconNewExpense" alt="" />
+    </main>
   </div>
 </template>
 
@@ -82,5 +85,16 @@ header h1 {
   background-color: var(--blanco);
   border-radius: 1.2rem;
   padding: 5rem;
+}
+
+.new-expense-container {
+  position: fixed;
+  bottom: 5rem;
+  right: 5rem;
+}
+
+.new-expense-container img {
+  width: 5rem;
+  cursor: pointer;
 }
 </style>
