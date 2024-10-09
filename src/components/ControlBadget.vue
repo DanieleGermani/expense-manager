@@ -1,5 +1,17 @@
 <script setup>
 import image from "../assets/img/grafico.jpg";
+import { amountFormat } from "../helpers";
+
+const props = defineProps({
+  badget: {
+    type: Number,
+    required: true,
+  },
+  avalableBudget: {
+    type: Number,
+    required: true,
+  },
+});
 </script>
 
 <template>
@@ -10,13 +22,13 @@ import image from "../assets/img/grafico.jpg";
     <div class="budget-container">
       <button class="reset-app">Resetear App</button>
       <p>
-        <span>Presupuesto: €0</span>
+        <span>Presupuesto: {{ amountFormat(badget) }}</span>
       </p>
       <p>
-        <span>Disponible: €0</span>
+        <span>Disponible: {{ amountFormat(avalableBudget) }}</span>
       </p>
       <p>
-        <span>Gastado: €0</span>
+        <span>Gastado: € 0</span>
       </p>
     </div>
   </div>

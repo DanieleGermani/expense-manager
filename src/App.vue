@@ -4,9 +4,11 @@ import Badget from "./components/Badget.vue";
 import ControlBadget from "./components/ControlBadget.vue";
 
 const badget = ref(0);
+const avalableBudget = ref(0);
 
 const difineBudget = (amount) => {
   badget.value = amount;
+  avalableBudget.value = amount;
 };
 </script>
 
@@ -16,7 +18,11 @@ const difineBudget = (amount) => {
       <h1>Planificador de Gastos</h1>
       <div class="header-container container shadow">
         <Badget v-if="badget === 0" @define-badget="difineBudget" />
-        <ControlBadget v-else />
+        <ControlBadget
+          v-else
+          :badget="badget"
+          :avalableBudget="avalableBudget"
+        />
       </div>
     </header>
   </div>
