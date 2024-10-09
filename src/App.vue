@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import Badget from "./components/Badget.vue";
+import ControlBadget from "./components/ControlBadget.vue";
 
 const badget = ref(0);
 
@@ -15,7 +16,7 @@ const difineBudget = (amount) => {
       <h1>Planificador de Gastos</h1>
       <div class="header-container container shadow">
         <Badget v-if="badget === 0" @define-badget="difineBudget" />
-        <p v-else>Presupuesto valido</p>
+        <ControlBadget v-else />
       </div>
     </header>
   </div>
