@@ -1,9 +1,23 @@
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+import Badget from "./components/Badget.vue";
+
+const badget = ref(0);
+
+const difineBudget = (amount) => {
+  badget.value = amount;
+};
+</script>
 
 <template>
   <div>
-    <header><h1>Planificador de Gastos</h1></header>
-    <Filter />
+    <header>
+      <h1>Planificador de Gastos</h1>
+      <div class="header-container container shadow">
+        <Badget v-if="badget === 0" @define-badget="difineBudget" />
+        <p v-else>Presupuesto valido</p>
+      </div>
+    </header>
   </div>
 </template>
 
@@ -44,5 +58,22 @@ header h1 {
   margin: 0;
   color: var(--blanco);
   text-align: center;
+}
+
+.container {
+  width: 90%;
+  max-width: 80rem;
+  margin: 0 auto;
+}
+.header-container {
+  margin-top: -5rem;
+  transform: translateY(5rem);
+  padding: 5rem;
+}
+.shadow {
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  background-color: var(--blanco);
+  border-radius: 1.2rem;
+  padding: 5rem;
 }
 </style>
