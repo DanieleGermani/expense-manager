@@ -1,19 +1,61 @@
 <script setup>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
+import iconNewExpense from "./assets/img/nuevo-gasto.svg";
+import { generateId } from "./helpers";
+
 import Badget from "./components/Badget.vue";
 import ControlBadget from "./components/ControlBadget.vue";
-import iconNewExpense from "./assets/img/nuevo-gasto.svg";
+import Modal from "./components/Modal.vue";
+import Expense from "./components/Expense.vue";
 const badget = ref(0);
 const avalableBudget = ref(0);
+const gastos = ref([]);
+const modal = reactive({ showModal: false, animated: false });
+const gasto = reactive({
+  nombre: "",
+  cantidad: "",
+  categoria: "",
+  id: null,
+  fecha: Date.now(),
+});
 
 const difineBudget = (amount) => {
   badget.value = amount;
   avalableBudget.value = amount;
 };
+
+const showModal = () => {
+  modal.showModal = true;
+  setTimeout(() => {
+    modal.animated = true;
+  }, 300);
+};
+
+const hideModal = () => {
+  modal.animated = false;
+  setTimeout(() => {
+    modal.showModal = false;
+  }, 300);
+};
+
+const guardarGasto = () => {
+  gastos.value.push({
+    ...gasto,
+    id: generateId(),
+  });
+  Object.assign(gasto, {
+    nombre: "",
+    cantidad: "",
+    categoria: "",
+    id: null,
+    fecha: Date.now(),
+  });
+  hideModal();
+};
 </script>
 
 <template>
-  <div>
+  <div :class="{ fixed: modal.showModal }">
     <header>
       <h1>Planificador de Gastos</h1>
       <div class="header-container container shadow">
@@ -25,8 +67,23 @@ const difineBudget = (amount) => {
         />
       </div>
     </header>
-    <main v-if="badget > 0" class="new-expense-container">
-      <img :src="iconNewExpense" alt="" />
+    <main v-if="badget > 0">
+      <div class="container listado-gastos">
+        <h2>{{ gastos.length > 0 ? "Gastos" : "No hay gastos" }}</h2>
+        <Expense v-for="gasto in gastos" :key="gasto.id" :gasto="gasto" />
+      </div>
+      <div class="new-expense-container">
+        <img :src="iconNewExpense" alt="" @click="showModal" />
+      </div>
+      <Modal
+        v-if="modal.showModal"
+        @close-modal="hideModal"
+        @guardar-gasto="guardarGasto"
+        v-model:nombre="gasto.nombre"
+        v-model:cantidad="gasto.cantidad"
+        v-model:categoria="gasto.categoria"
+        :modal="modal"
+      />
     </main>
   </div>
 </template>
@@ -96,5 +153,17 @@ header h1 {
 .new-expense-container img {
   width: 5rem;
   cursor: pointer;
+}
+
+.listado-gastos {
+  margin-top: 10rem;
+}
+.listado-gastos h2 {
+  font-weight: 900;
+  color: var(--gris-oscuro);
+}
+.fixed {
+  overflow: hidden;
+  height: 100vh;
 }
 </style>
