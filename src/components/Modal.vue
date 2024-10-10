@@ -32,11 +32,17 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  id: {
+    type: String,
+    required: false,
+  },
 });
-
+const isEditing = computed(() => {
+  return props.id;
+});
 const agregarGasto = () => {
   // Validar que no haya campos vacios
-  const { nombre, cantidad, categoria, avalableBudget } = props;
+  const { nombre, cantidad, categoria, avalableBudget, id } = props;
   if ([nombre, cantidad, categoria].includes("")) {
     error.value = "Todos los campos son obligatorios";
     return;
@@ -104,7 +110,10 @@ const agregarGasto = () => {
             <option value="suscripciones">Suscripciones</option>
           </select>
         </div>
-        <input type="submit" value="Anadir Gasto" />
+        <input
+          type="submit"
+          :value="[isEditing ? 'Editar Gasto' : 'Añadir Gasto']"
+        />
       </form>
     </div>
   </div>

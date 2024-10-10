@@ -17,6 +17,7 @@ const diccionarioIconos = {
   salud: IconoSalud,
   suscripciones: IconoSuscripciones,
 };
+defineEmits(["open-edit-modal"]);
 
 const props = defineProps({
   gasto: {
@@ -35,7 +36,9 @@ const props = defineProps({
       />
       <div class="detalles">
         <p class="categoria">{{ gasto.categoria }}</p>
-        <p class="nombre">{{ gasto.nombre }}</p>
+        <p class="nombre" @click="$emit('open-edit-modal', gasto.id)">
+          {{ gasto.nombre }}
+        </p>
         <p class="fecha">
           Fecha:
           <span>{{ dateFormat(gasto.fecha) }}</span>

@@ -49,22 +49,34 @@ const hideModal = () => {
   modal.animated = false;
   setTimeout(() => {
     modal.showModal = false;
+    Object.assign(gasto, {
+      nombre: "",
+      cantidad: "",
+      categoria: "",
+      id: null,
+      fecha: Date.now(),
+    });
   }, 300);
 };
 
 const guardarGasto = () => {
-  gastos.value.push({
-    ...gasto,
-    id: generateId(),
-  });
-  Object.assign(gasto, {
-    nombre: "",
-    cantidad: "",
-    categoria: "",
-    id: null,
-    fecha: Date.now(),
-  });
+  if (gasto.id) {
+    const index = gastos.value.findIndex((gasto) => gasto.id === gasto.id);
+    gastos.value[index] = { ...gasto };
+  } else {
+    gastos.value.push({
+      ...gasto,
+      id: generateId(),
+    });
+  }
+
   hideModal();
+};
+
+const openEditModal = (id) => {
+  const expendeToEdit = gastos.value.find((gasto) => gasto.id === id);
+  Object.assign(gasto, expendeToEdit);
+  showModal();
 };
 </script>
 
@@ -85,7 +97,12 @@ const guardarGasto = () => {
     <main v-if="badget > 0">
       <div class="container listado-gastos">
         <h2>{{ gastos.length > 0 ? "Gastos" : "No hay gastos" }}</h2>
-        <Expense v-for="gasto in gastos" :key="gasto.id" :gasto="gasto" />
+        <Expense
+          v-for="gasto in gastos"
+          :key="gasto.id"
+          :gasto="gasto"
+          @open-edit-modal="openEditModal"
+        />
       </div>
       <div class="new-expense-container">
         <img :src="iconNewExpense" alt="" @click="showModal" />
@@ -98,6 +115,7 @@ const guardarGasto = () => {
         v-model:cantidad="gasto.cantidad"
         v-model:categoria="gasto.categoria"
         v-model:avalableBudget="avalableBudget"
+        v-model:id="gasto.id"
         :modal="modal"
       />
     </main>
