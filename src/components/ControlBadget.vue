@@ -16,6 +16,7 @@ const props = defineProps({
     required: true,
   },
 });
+defineEmits(["rest-app"]);
 </script>
 
 <template>
@@ -24,7 +25,7 @@ const props = defineProps({
       <img :src="image" alt="" />
     </div>
     <div class="budget-container">
-      <button class="reset-app">Resetear App</button>
+      <button @click="$emit('rest-app')" class="reset-app">Resetear App</button>
       <p>
         <span>Presupuesto: {{ amountFormat(badget) }}</span>
       </p>

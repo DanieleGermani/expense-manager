@@ -107,6 +107,11 @@ const expepensesFiltered = computed(() => {
   }
   return gastos.value;
 });
+
+const restApp = () => {
+  gastos.value = [];
+  badget.value = 0;
+};
 </script>
 
 <template>
@@ -120,6 +125,7 @@ const expepensesFiltered = computed(() => {
           :badget="badget"
           :avalableBudget="avalableBudget"
           :spent="spent"
+          @rest-app="restApp"
         />
       </div>
     </header>
