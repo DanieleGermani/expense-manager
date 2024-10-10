@@ -73,6 +73,11 @@ const guardarGasto = () => {
   hideModal();
 };
 
+const deleteExpense = () => {
+  gastos.value = gastos.value.filter((expense) => expense.id !== gasto.id);
+  hideModal();
+};
+
 const openEditModal = (id) => {
   const expendeToEdit = gastos.value.find((gasto) => gasto.id === id);
   Object.assign(gasto, expendeToEdit);
@@ -111,10 +116,11 @@ const openEditModal = (id) => {
         v-if="modal.showModal"
         @close-modal="hideModal"
         @guardar-gasto="guardarGasto"
+        @delete-expense="deleteExpense"
         v-model:nombre="gasto.nombre"
         v-model:cantidad="gasto.cantidad"
         v-model:categoria="gasto.categoria"
-        v-model:avalableBudget="avalableBudget"
+        :avalableBudget="avalableBudget"
         :id="gasto.id"
         :modal="modal"
       />

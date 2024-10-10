@@ -7,6 +7,7 @@ const error = ref("");
 const emit = defineEmits([
   "close-modal",
   "guardar-gasto",
+  "delete-expense",
   "update:nombre",
   "update:cantidad",
   "update:categoria",
@@ -124,6 +125,15 @@ const agregarGasto = () => {
           :value="[isEditing ? 'Editar Gasto' : 'Añadir Gasto']"
         />
       </form>
+
+      <button
+        v-if="isEditing"
+        @click="$emit('delete-expense')"
+        class="btn-eliminar"
+        type="button"
+      >
+        Eleminar Gasto
+      </button>
     </div>
   </div>
 </template>
