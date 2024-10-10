@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, watch } from "vue";
 import iconNewExpense from "./assets/img/nuevo-gasto.svg";
 import { generateId } from "./helpers";
 
@@ -9,6 +9,7 @@ import Modal from "./components/Modal.vue";
 import Expense from "./components/Expense.vue";
 const badget = ref(0);
 const avalableBudget = ref(0);
+const spent = ref(0);
 const gastos = ref([]);
 const modal = reactive({ showModal: false, animated: false });
 const gasto = reactive({
@@ -18,6 +19,19 @@ const gasto = reactive({
   id: null,
   fecha: Date.now(),
 });
+
+watch(
+  gastos,
+  () => {
+    const totalSpent = gastos.value.reduce(
+      (total, gasto) => gasto.cantidad + total,
+      0
+    );
+    spent.value = totalSpent;
+    avalableBudget.value = badget.value - totalSpent;
+  },
+  { deep: true }
+);
 
 const difineBudget = (amount) => {
   badget.value = amount;
@@ -64,6 +78,7 @@ const guardarGasto = () => {
           v-else
           :badget="badget"
           :avalableBudget="avalableBudget"
+          :spent="spent"
         />
       </div>
     </header>
