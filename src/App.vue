@@ -97,6 +97,7 @@ const guardarGasto = () => {
         v-model:nombre="gasto.nombre"
         v-model:cantidad="gasto.cantidad"
         v-model:categoria="gasto.categoria"
+        v-model:avalableBudget="avalableBudget"
         :modal="modal"
       />
     </main>

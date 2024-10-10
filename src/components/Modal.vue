@@ -28,17 +28,25 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  avalableBudget: {
+    type: Number,
+    required: true,
+  },
 });
 
 const agregarGasto = () => {
   // Validar que no haya campos vacios
-  const { nombre, cantidad, categoria } = props;
+  const { nombre, cantidad, categoria, avalableBudget } = props;
   if ([nombre, cantidad, categoria].includes("")) {
     error.value = "Todos los campos son obligatorios";
     return;
   }
   if (Number(cantidad) <= 0) {
     error.value = "La cantidad tiene que ser mayor a 0";
+    return;
+  }
+  if (Number(cantidad) > avalableBudget) {
+    error.value = "No hay fondos suficientes";
     return;
   }
   emit("guardar-gasto");
