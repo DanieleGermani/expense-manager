@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, watch, computed } from "vue";
+import { ref, reactive, watch, computed, onMounted } from "vue";
 import iconNewExpense from "./assets/img/nuevo-gasto.svg";
 import { generateId } from "./helpers";
 
@@ -31,10 +31,25 @@ watch(
     );
     spent.value = totalSpent;
     avalableBudget.value = badget.value - totalSpent;
+    localStorage.setItem("expenses", JSON.stringify(gastos.value));
   },
   { deep: true }
 );
+watch(badget, () => {
+  localStorage.setItem("badget", badget.value);
+});
 
+onMounted(() => {
+  const badgetStorage = localStorage.getItem("badget");
+  if (badgetStorage) {
+    badget.value = Number(badgetStorage);
+    avalableBudget.value = Number(badgetStorage);
+  }
+  const expensesStorage = localStorage.getItem("expenses");
+  if (expensesStorage) {
+    gastos.value = JSON.parse(expensesStorage);
+  }
+});
 const difineBudget = (amount) => {
   badget.value = amount;
   avalableBudget.value = amount;
