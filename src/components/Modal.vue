@@ -33,10 +33,11 @@ const props = defineProps({
     required: true,
   },
   id: {
-    type: String,
-    required: false,
+    type: [String, null],
+    required: true,
   },
 });
+const oldQuantity = props.cantidad;
 const isEditing = computed(() => {
   return props.id;
 });
@@ -51,10 +52,18 @@ const agregarGasto = () => {
     error.value = "La cantidad tiene que ser mayor a 0";
     return;
   }
-  if (Number(cantidad) > avalableBudget) {
-    error.value = "No hay fondos suficientes";
-    return;
+  if (id) {
+    if (Number(cantidad) > avalableBudget + Number(oldQuantity)) {
+      error.value = "No hay fondos suficientes";
+      return;
+    }
+  } else {
+    if (Number(cantidad) > avalableBudget) {
+      error.value = "No hay fondos suficientes";
+      return;
+    }
   }
+
   emit("guardar-gasto");
 };
 </script>
@@ -69,7 +78,7 @@ const agregarGasto = () => {
       :class="[modal.animated ? 'animar' : 'cerrar']"
     >
       <form class="nuevo-gasto" @submit.prevent="agregarGasto">
-        <legend>Añadir Gasto</legend>
+        <legend>{{ isEditing ? "Editar Gasto" : "Añadir Gasto" }}</legend>
         <Alert v-if="error">
           {{ error }}
         </Alert>

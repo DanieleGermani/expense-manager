@@ -115,7 +115,7 @@ const openEditModal = (id) => {
         v-model:cantidad="gasto.cantidad"
         v-model:categoria="gasto.categoria"
         v-model:avalableBudget="avalableBudget"
-        v-model:id="gasto.id"
+        :id="gasto.id"
         :modal="modal"
       />
     </main>
