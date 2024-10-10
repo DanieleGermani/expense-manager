@@ -1,7 +1,7 @@
 <script setup>
-import image from "../assets/img/grafico.jpg";
 import { amountFormat } from "../helpers";
-
+import { CircleProgressBar } from "circle-progress.vue";
+import { computed } from "vue";
 const props = defineProps({
   badget: {
     type: Number,
@@ -17,12 +17,26 @@ const props = defineProps({
   },
 });
 defineEmits(["rest-app"]);
+const percentage = computed(() => {
+  return parseInt(((props.badget - props.avalableBudget) / props.badget) * 100);
+});
 </script>
 
 <template>
   <div class="container">
     <div class="grafic-container">
-      <img :src="image" alt="" />
+      <CircleProgressBar
+        :value="percentage"
+        :max="100"
+        :size="250"
+        color-unfilled="#3b82f6"
+        color-back="#e1e1e1"
+        stroke-width="10"
+        percentage
+        rounded
+      >
+        {{ value }}
+      </CircleProgressBar>
     </div>
     <div class="budget-container">
       <button @click="$emit('rest-app')" class="reset-app">Resetear App</button>

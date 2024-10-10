@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "circle-progress.vue": "^3.2.2",
     "sass": "^1.79.4",
     "vue": "^3.5.10"
   },
